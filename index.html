@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Barber 50cent - عجلة الحظ</title>
+    <!-- استيراد خط تجوال الرهيب للأشكال الاحترافية -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@700;900&family=Tajawal:wght@700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #ffcc00;
+            --dark: #111111;
+            --dark-gray: #1a1a1a;
+            --light: #ffffff;
+            --font-main: 'Tajawal', sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: var(--font-main);
+        }
+
+        body {
+            background: radial-gradient(circle, var(--dark-gray) 0%, var(--dark) 100%);
+            color: var(--light);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+            padding: 20px;
+        }
+
+        /* واجهة صالون Barber 50cent */
+        header {
+            text-align: center;
+            margin-bottom: 25px;
+            animation: fadeIn 1.5s ease-in-out;
+        }
+
+        h1 {
+            font-family: 'Cairo', sans-serif;
+            font-size: 3.8rem;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 20px rgba(255, 204, 0, 0.5);
+            margin-bottom: 5px;
+            font-weight: 900;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: #bbb;
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+
+        /* صندوق الشرح */
+        .info-box {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 204, 0, 0.25);
+            border-radius: 16px;
+            padding: 20px;
+            max-width: 480px;
+            text-align: center;
+            margin-bottom: 35px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(6px);
+        }
+
+        .info-box h3 {
+            color: var(--primary);
+            font-size: 1.4rem;
+            margin-bottom: 8px;
+        }
+
+        .info-box p {
+            color: #ddd;
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        /* حاوية العجلة والمؤشر */
+        .wheel-container {
+            position: relative;
+            width: 380px;
+            height: 380px;
+            margin-bottom: 35px;
+        }
+
+        /* مؤشر العجلة الفاخر */
+        .pointer {
+            position: absolute;
+            top: -18px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 22px solid transparent;
+            border-right: 22px solid transparent;
+            border-top: 38px solid var(--primary);
+            z-index: 20;
+            filter: drop-shadow(0px 5px 8px rgba(0,0,0,0.7));
+        }
+
+        /* جسم العجلة */
+        .wheel-wrapper {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 10px solid var(--primary);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 35px rgba(255, 204, 0, 0.25), inset 0 0 30px rgba(0,0,0,0.8);
+            transition: transform 4s cubic-bezier(0.25, 0.1, 0.25, 1);
+        }
+
+        .wheel-svg {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        /* تنسيق الخطوط الداخلي ليكون مرتباً وجذاباً ومقروءاً */
+        .wheel-text {
+            font-family: var(--font-main);
+            font-weight: 900;
+            font-size: 11px; /* حجم مثالي ومتناسق */
+            fill: #ffffff;
+            letter-spacing: 0.5px;
+            text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.8); /* ظل يبرز الخط */
+        }
+
+        /* تمييز خط حظ أوفر */
+        .wheel-text.lost {
+            fill: #ffcc00;
+        }
+
+        /* السنتر أو الزر الأوسط الديكوري */
+        .inner-circle {
+            position: absolute;
+            width: 55px;
+            height: 55px;
+            background: radial-gradient(circle, #333 0%, var(--dark) 100%);
+            border: 4px solid var(--primary);
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10;
+            box-shadow: 0 0 15px rgba(0,0,0,0.6);
+        }
+
+        /* زر التشغيل */
+        .spin-btn {
+            background: linear-gradient(135deg, var(--primary) 0%, #ff9900 100%);
+            border: none;
+            color: var(--dark);
+            padding: 16px 45px;
+            font-size: 1.4rem;
+            font-weight: 900;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(255, 204, 0, 0.35);
+            transition: all 0.2s ease-in-out;
+        }
+
+        .spin-btn:hover {
+            transform: scale(1.05) translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 204, 0, 0.5);
+        }
+
+        .spin-btn:active {
+            transform: scale(0.98);
+        }
+
+        .spin-btn:disabled {
+            background: #444;
+            color: #888;
+            cursor: not-allowed;
+            box-shadow: none;
+            transform: none;
+        }
+
+        /* صندوق عرض النتيجة */
+        .result {
+            margin-top: 25px;
+            font-size: 1.6rem;
+            font-weight: 900;
+            min-height: 40px;
+            color: var(--primary);
+            text-align: center;
+            text-shadow: 0 0 15px rgba(255, 204, 0, 0.3);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Barber 50cent</h1>
+        <p class="subtitle">أفضل تجربة حلاقة وعناية برجل العصر</p>
+    </header>
+
+    <div class="info-box">
+        <h3>🎯 شرح عجلة الحظ</h3>
+        <p>قم بتجريب حظك بعجلة الحظ واربح خدمات مجانية فورية! اضغط على الزر أدناه ودع العجلة تحدد هديتك اليوم.</p>
+    </div>
+
+    <div class="wheel-container">
+        <div class="pointer"></div>
+        <div class="inner-circle"></div>
+        
+        <div class="wheel-wrapper" id="wheelWrapper">
+            <svg class="wheel-svg" viewBox="0 0 200 200">
+                <!-- القسم 1: حظ أوفر (أسود فاخر) -->
+                <path d="M100,100 L100,0 A100,100 0 0,1 200,100 Z" fill="#1e1e1e"/>
+                <!-- التموضع والدوران والازاحة مضبوطين بدقة ليكون النص بالمنتصف تماماً -->
+                <text x="150" y="55" class="wheel-text lost" text-anchor="middle" transform="rotate(45 150 55)">حظ أوفر</text>
+
+                <!-- القسم 2: حلاقة مجانية (أحمر عنابي مائل للغمقان) -->
+                <path d="M100,100 L200,100 A100,100 0 0,1 100,200 Z" fill="#b71c1c"/>
+                <text x="145" y="145" class="wheel-text" text-anchor="middle" transform="rotate(135 145 145)">حلاقة مجانية</text>
+
+                <!-- القسم 3: تنظيف بشرة مجاني (أزرق غامق ملكي) -->
+                <path d="M100,100 L100,200 A100,100 0 0,1 0,100 Z" fill="#0d47a1"/>
+                <text x="55" y="145" class="wheel-text" text-anchor="middle" transform="rotate(225 55 145)">تنظيف بشرة</text>
+
+                <!-- القسم 4: جلسة حجامة مجانية (أخضر زيتي عميق) -->
+                <path d="M100,100 L0,100 A100,100 0 0,1 100,0 Z" fill="#1b5e20"/>
+                <text x="50" y="55" class="wheel-text" text-anchor="middle" transform="rotate(315 50 55)">جلسة حجامة</text>
+            </svg>
+        </div>
+    </div>
+
+    <button class="spin-btn" id="spinBtn" onclick="spinWheel()">جرب حظك الآن! 🎰</button>
+    <div class="result" id="result"></div>
+
+    <script>
+        const wheelWrapper = document.getElementById('wheelWrapper');
+        const spinBtn = document.getElementById('spinBtn');
+        const resultDiv = document.getElementById('result');
+
+        // نظام محاكاة الصوت الداخلي المتطور
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        
+        function playSpinSound() {
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(180, audioCtx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(550, audioCtx.currentTime + 4);
+            gain.gain.setValueAtTime(0.12, audioCtx.currentTime);
+            gain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 4);
+            osc.start();
+            osc.stop(audioCtx.currentTime + 4);
+        }
+
+        function playWinSound() {
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(440, audioCtx.currentTime);
+            osc.frequency.setValueAtTime(659.25, audioCtx.currentTime + 0.15);
+            osc.frequency.setValueAtTime(880, audioCtx.currentTime + 0.3);
+            gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+            gain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.6);
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.6);
+        }
+
+        // الأقسام والزوايا الدقيقة (عكس حركة الدوران بالنسبة للمؤشر العلوي)
+        const prizes = [
+            { name: "😔 حظ أوفر في المرة القادمة!", minDeg: 271, maxDeg: 360 }, 
+            { name: "🔥 مبروك! حصلت على جلسة حجامة مجانية", minDeg: 181, maxDeg: 270 }, 
+            { name: "✨ مبروك! حصلت على تنظيف بشرة مجاني", minDeg: 91, maxDeg: 180 },  
+            { name: "✂️ مبروك! حصلت على حلاقة مجانية", minDeg: 0, maxDeg: 90 }      
+        ];
+
+        function spinWheel() {
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+
+            spinBtn.disabled = true;
+            resultDiv.innerText = "🌀 العجلة تدور... ترقب جائزتك!";
+            playSpinSound();
+
+            // تطبيق النسب المحددة بدقة
+            const rand = Math.random() * 100; 
+            let selectedPrize;
+
+            if (rand <= 60) {
+                selectedPrize = prizes[0]; // حظ أوفر 60%
+            } else if (rand <= 92) {
+                selectedPrize = prizes[2]; // تنظيف بشرة 32%
+            } else if (rand <= 97) {
+                selectedPrize = prizes[1]; // حجامة 5%
+            } else {
+                selectedPrize = prizes[3]; // حلاقة 3%
+            }
+
+            // اختيار زاوية عشوائية تقع بمنتصف القسم لضمان شكل وقوف مثالي
+            const targetDeg = Math.floor(Math.random() * (selectedPrize.maxDeg - selectedPrize.minDeg + 1)) + selectedPrize.minDeg;
+            
+            // 5 دورات كاملة بسرعة متوسطة (ثابتة لمدة 4 ثواني)
+            const totalRotation = 1800 + targetDeg;
+
+            wheelWrapper.style.transform = `rotate(${totalRotation}deg)`;
+
+            setTimeout(() => {
+                resultDiv.innerText = selectedPrize.name;
+                playWinSound();
+                
+                // تصفير ذكي للزاوية استعداداً للبرمة القادمة دون حركة عكسية مشوهة
+                setTimeout(() => {
+                    wheelWrapper.style.transition = 'none';
+                    wheelWrapper.style.transform = `rotate(${targetDeg}deg)`;
+                    setTimeout(() => {
+                        wheelWrapper.style.transition = 'transform 4s cubic-bezier(0.25, 0.1, 0.25, 1)';
+                        spinBtn.disabled = false;
+                    }, 50);
+                }, 500);
+
+            }, 4000);
+        }
+    </script>
+</body>
+</html>
